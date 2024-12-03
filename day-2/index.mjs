@@ -72,10 +72,54 @@ const getSafeReports = () => {
     return totalSafeReports;
 }
 
+const getSafeReportsFlexible = () => {
+    let totalSafeReports = 0;
+
+    for(let i = 0; i < levels.length; i++){
+        let isSafe = true;
+        let isIncreasing = null;
+        let oneAnswerError = 0;
+        for(let j = 0; j < levels[i].length - 1; j++){
+            diff = levels[i][j] - levels[i][j + 1]
+            if(Math.abs(diff) < 1 || Math.abs(diff) > 3){
+                if(oneAnswerError > 0){
+                    isSafe = false;
+                    break;
+                }
+                oneAnswerError += 1;
+            }
+            if(diff < 0){
+                if(isIncreasing == false){
+                    if(oneAnswerError > 0){
+                        isSafe = false;
+                        break;
+                    }
+                    oneAnswerError += 1
+
+                }
+                isIncreasing= true;
+            }else{
+                if(isIncreasing){
+                    if(oneAnswerError < 0){
+                        isSafe = false;
+                        break;
+                    }
+                    oneAnswerError += 1;
+
+                }
+                isIncreasing = false;
+            }
+        }
+        if(isSafe){
+            totalSafeReports += 1;
+        }
+    }
+
+    return totalSafeReports;
+}
 
 
-
-console.log(getSafeReports())
+console.log(getSafeReportsFlexible())
 
 
  
