@@ -20,7 +20,8 @@ try {
 
 const input = await getInput()
 
-let levels = [[]]
+let levels = []
+
 
 const splitIntoRows = (data) => {
     const reports = data.trim().split('\n'); 
@@ -32,9 +33,45 @@ const splitIntoRows = (data) => {
 splitIntoRows(input)
 
 
-let isIncreasing = false;
-let isDescreasing = false;
+let isIncreasing = null;
 let totalSafeReports = 0;
+let diff = 0;
+
+
+const getSafeReports = () => {
+    for(let i = 0; i < levels.length; i ++){
+        let isSafe = true;
+        isIncreasing = null;
+        for(let j = 0; j < levels[i].length - 1; j++){
+            diff = levels[i][j] - levels[i][j+1]
+            if(Math.abs(diff) < 1 || Math.abs(diff) > 3){
+                isSafe = false;
+                break;
+            }
+            if(diff < 0){
+                if(isIncreasing == false){
+                    isSafe = false;
+                    break;
+                }
+                isIncreasing = true;
+            }else{
+                if(isIncreasing){
+                    isSafe = false;
+                    break;
+                }
+                isIncreasing = false;
+            }
+        }
+
+        if(isSafe){
+            totalSafeReports += 1;
+        }
+        
+    }
+
+    return totalSafeReports;
+}
+
 
 
 
